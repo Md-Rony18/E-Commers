@@ -1,0 +1,84 @@
+﻿@using Microsoft.AspNetCore.Http
+@using OnlineShop.Utilitis
+@model Order
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "OrderNow";
+}
+@{
+    List<Product> products = HttpContextAccessor.HttpContext.Session.Get<List<Product>>("products");
+    if (products == null)
+    {
+        products = new List<Product>();
+    }
+}
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">Order Details</div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <form asp-action="OrderNow" asp-controller="Order" method="post">
+                      <div class="form-group">
+                          <label asp-for="Name" class="control-label"></label>
+                          <input asp-for="Name" class="form-control" id="inputEmail3" placeholder="Oder Name">
+                      </div>
+                      <div class="form-group">
+                          <label asp-for="Address" class="control-label"></label>
+                          <input asp-for="Address" class="form-control" id="inputEmail3" placeholder="Oder Name">
+                      </div>
+                      <div class="form-group">
+                          <label asp-for="Email" class="control-label"></label>
+                          <input asp-for="Email" class="form-control" id="inputEmail3" placeholder="Oder Name">
+                      </div>
+                      <div class="form-group">
+                          <label asp-for="PhoneNo" class="control-label"></label>
+                          <input asp-for="PhoneNo" class="form-control" id="inputEmail3" placeholder="Oder Name">
+                      </div>
+                      <div class="form-group">
+                          <label asp-for="OrderDate" class="control-label"></label>
+                          <input asp-for="OrderDate" class="form-control" id="inputEmail3" placeholder="Oder Name">
+                      </div>
+                       <div class="button-group">
+                            <button type="submit" class="btn btn-info text-end">Order Now</button>
+                       </div>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <table class="table table-bordered">
+                        <thead class="bg-black text-white">
+                            <tr class="text-center">
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Image</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                @foreach (var item in products)
+                                {
+                                    <tr class="text-center">
+                                        <td>@item.Name</td>
+                                        <td>@item.Price</td>
+                                        <td>
+                                        <img src="~/@item.Img" class="img-responsive img-thumbnail" height="60" width="60" asp-append-version=true/> 
+                                        </td>
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                    </div>
+                    <div class="row">
+                    <div class="col-md-6">
+                        <a class="btn btn-outline-primary" asp-action="Index" asp-controller="Home" >Back To Home</a>
+                    </div>
+                    <div class="col-md-6">
+                        <h2>Total Price:</h2>
+                        <h3>Sub Total Price:@products.Sum(p=>p.Price)</h3>
+                    </div>
+                   </div>
+            </div>
+    </div>
+    </div>
+</div>
